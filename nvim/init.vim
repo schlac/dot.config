@@ -20,6 +20,7 @@ set showbreak=+++   " Wrap-broken line prefix
 set list            " Show trailing whitespaces
 set listchars=tab:▸\ ,trail:▫ " Set chars for whitespaces
 set textwidth=80    " Line wrap (number of cols)
+set colorcolumn=+1  " Show vertical ruler at textwidth
 set visualbell      " Use visual bell (no beeping)
 
 set ruler           " Show row and column ruler information
