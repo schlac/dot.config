@@ -10,11 +10,12 @@ if empty(glob(s:vimdir . '/autoload/plug.vim'))
 endif
 
 call plug#begin(s:vimdir . '/plugged')
-Plug 'junegunn/goyo.vim'	" distraction free md
+Plug 'junegunn/goyo.vim'    " distraction free md
 call plug#end()
 
-set number          " Show line numbers
+set number rnu      " Show hybrid line numbers
 set linebreak       " Break lines at word (requires Wrap lines)
+
 set showbreak=+++   " Wrap-broken line prefix
 set list            " Show trailing whitespaces
 set listchars=tab:▸\ ,trail:▫ " Set chars for whitespaces
