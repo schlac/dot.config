@@ -1,5 +1,18 @@
 ﻿"" General
 set nocompatible    " No vi compatibility
+
+" Install Plug
+let s:vimdir = $HOME . '/.config/nvim'
+if empty(glob(s:vimdir . '/autoload/plug.vim'))
+  silent exe '!' 'curl -fLo' s:vimdir . '/autoload/plug.vim --create-dirs'
+    \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin(s:vimdir . '/plugged')
+Plug 'junegunn/goyo.vim'	" distraction free md
+call plug#end()
+
 set number          " Show line numbers
 set linebreak       " Break lines at word (requires Wrap lines)
 set showbreak=+++   " Wrap-broken line prefix
