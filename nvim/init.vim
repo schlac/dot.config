@@ -42,7 +42,9 @@ set wildmenu        " Use command line menu
 
 set autoread        " Reload contens automatically from disk
 set backspace=indent,eol,start  " Backspace behaviour
-set path+=**        " "fuzzy find" in sub-directories
+if !has('win32')    " Do not do this when running in Windows
+    set path+=**    " "fuzzy find" in sub-directories
+endif
 
 syntax enable       " Enable syntax highlighting
 filetype plugin on  " Enable visual file browser
