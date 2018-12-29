@@ -10,7 +10,9 @@ if empty(glob(s:vimdir . '/autoload/plug.vim'))
 endif
 
 call plug#begin(s:vimdir . '/plugged')
+Plug 'ctrlpvim/ctrlp.vim'   " fuzzy finder
 Plug 'junegunn/goyo.vim'    " distraction free md
+Plug 'sjl/badwolf'          " color sheme
 call plug#end()
 
 set number rnu      " Show hybrid line numbers
@@ -47,6 +49,11 @@ if !has('win32')    " Do not do this when running in Windows
 endif
 
 syntax enable       " Enable syntax highlighting
-filetype plugin on  " Enable visual file browser
-color desert        " Set fallback theme
+filetype plugin on  " Enable visual filetry
+
+try
+    color badwolf
+catch /^Vim\%((\a\+)\)\=:E185/
+    color desert    " Set fallback theme
+endtry
 
