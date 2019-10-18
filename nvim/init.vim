@@ -15,7 +15,7 @@ Plug 'junegunn/goyo.vim'    " distraction free md
 Plug 'sjl/badwolf'          " color sheme
 call plug#end()
 
-set number rnu      " Show hybrid line numbers
+set number          " Show line numbers
 set linebreak       " Break lines at word (requires Wrap lines)
 
 set showbreak=+++   " Wrap-broken line prefix
