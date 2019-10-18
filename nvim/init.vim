@@ -10,8 +10,9 @@ if empty(glob(s:vimdir . '/autoload/plug.vim'))
 endif
 
 call plug#begin(s:vimdir . '/plugged')
-Plug 'ctrlpvim/ctrlp.vim'   " fuzzy finder
-Plug 'junegunn/goyo.vim'    " distraction free md
+Plug 'ctrlpvim/ctrlp.vim'   " fuzzy file finder
+Plug 'wsdjeg/FlyGrep.vim'   " nicer global grep
+Plug 'bling/vim-airline'    " nicer status line
 Plug 'sjl/badwolf'          " color sheme
 call plug#end()
 
@@ -28,7 +29,6 @@ set visualbell      " Use visual bell (no beeping)
 set ruler           " Show row and column ruler information
 set showcmd         " Show current command
 set showmatch       " Highlight matching brace
-set hlsearch        " Highlight all search results
 set smartcase       " Enable smart-case search
 set ignorecase      " Always case-insensitive
 set incsearch       " Searches for strings incrementally
@@ -56,4 +56,7 @@ try
 catch /^Vim\%((\a\+)\)\=:E185/
     color desert    " Set fallback theme
 endtry
+
+" Key Bindings
+nnoremap <Space>s/ :FlyGrep<cr>
 
