@@ -3,6 +3,9 @@
 Clone this to `~/.config`.
 
 Set `XDG_CONFIG_HOME="$HOME\.config"`.
+More info at
+https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+.
 
 
 # Contents
