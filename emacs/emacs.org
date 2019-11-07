@@ -1,0 +1,367 @@
+#+TITLE: Emacs init file written in org-mode
+#+LANGUAGE: en
+#+STARTUP: showall
+
+* Loading this File
+
+To use the org mode emacs file add the following to =$HOME/.emacs=:
+
+Proxies can be defined as follows:
+
+;; Define proxy settings
+(setq url-proxy-services '(
+  ("no_proxy" . "^\\(localhost\\|10.*\\)") 
+  ("http" . "my.proxy.com:8080")
+  ("https" . "my.proxy.com:8080")))
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (package-initialize)
+  (require 'ob-tangle)
+  (org-babel-load-file (expand-file-name "~/.emacs.d/emacs.org"))
+#+END_SRC
+
+* Packages
+
+#+BEGIN_SRC emacs-lisp
+  ;; Define package repositories
+  (require 'package)
+  (setq package-archives 
+    '(("gnu"       . "http://elpa.gnu.org/packages/")
+      ("org"       . "http://orgmode.org/elpa/")
+      ("melpa"     . "http://melpa.milkbox.net/packages/")
+      ;("marmalade" . "http://marmalade-repo.org/packages/")
+      ;("tromey"    . "http://tromey.com/elpa/")
+  ))
+
+  ;; Load and activate emacs packages. Do this first so that the
+  ;; packages are loaded before you start trying to modify them.  This
+  ;; also sets the load path.
+  (package-initialize)
+
+  ;; Place downloaded emacs-lisp files in ~/.emacs.d/vendor. You'll then
+  ;; be able to load them.
+  (add-to-list 'load-path "~/.emacs.d/vendor")
+
+  ;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
+  ;; then you can add the following code to this file:
+  ;;
+  ;; (require 'yaml-mode)
+  ;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+  ;; 
+  ;; Adding this code will make Emacs enter yaml mode whenever you open
+  ;; a .yml file
+#+END_SRC
+
+** Auto-install packages
+
+#+BEGIN_SRC emacs-lisp
+  (defvar auto-install-packages
+    '(
+      ;; themes
+      monokai-theme solarized-theme
+      ;; colorful parenthesis matching
+      rainbow-delimiters
+      ;; git integration
+      magit
+    )
+    "A list of packages to ensure are installed at launch.")
+
+  (require 'cl)
+  (defun auto-install-packages-installed-p ()
+    (loop for p in auto-install-packages
+       when (not (package-installed-p p)) do (return nil)
+       finally (return t)))
+
+  (unless (auto-install-packages-installed-p)
+    ;; check for new packages (package versions)
+    (message "%s" "Emacs is now refreshing its package database...")
+    (package-refresh-contents)
+    (message "%s" " done.")
+    ;; install the missing packages
+    (dolist (p auto-install-packages)
+      (when (not (package-installed-p p))
+        (package-install p))))
+#+END_SRC
+
+** Windows host
+
+#+BEGIN_SRC emacs-lisp
+  (if (equal system-type 'windows-nt)
+    (progn 
+      (add-to-list 'exec-path "C:/Program Files/Git/bin"))
+      (setq explicit-shell-file-name "C:/Program Files/Git/bin/bash.exe")
+      (setq shell-file-name explicit-shell-file-name)
+
+      (setq explicit-sh.exe-args '("--login" "-i"))
+      (setenv "SHELL" "bash")
+      (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m))
+#+END_SRC
+
+** UI customization
+
+These customizations change the way emacs looks and disable/enable
+some user interface elements.
+
+#+BEGIN_SRC emacs-lisp
+  ;; These customizations change the way emacs looks and disable/enable
+  ;; some user interface elements. Some useful customizations are
+  ;; commented out, and begin with the line "CUSTOMIZE". These are more
+  ;; a matter of preference and may require some fiddling to match your
+  ;; preferences
+
+  ;; Turn off the menu bar at the top of each frame because it's distracting
+  (when (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1))
+
+  ;; Turn off the toolbar.
+  (when (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+
+  ;; Don't show native OS scroll bars for buffers because they're redundant
+  (when (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+
+  ;; Show line numbers
+  (global-linum-mode)
+  ;; Set line number colors
+  ;(set-face-foreground 'linum "#555")
+  ;(set-face-background 'linum "#000")
+#+END_SRC
+
+** Themes
+
+#+BEGIN_SRC emacs-lisp
+  ;; Go straight to scratch buffer on startup
+  (setq inhibit-startup-message t)
+  ;; Set the scratch buffer to be empty
+  (setq initial-scratch-message ";; *scratch*")
+#+END_SRC
+
+Set the monokai color theme.
+#+BEGIN_SRC emacs-lisp
+  ;; Color Themes
+  ;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
+  ;; for a great explanation of emacs color themes.
+  ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
+  ;; for a more technical explanation.
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+  (add-to-list 'load-path "~/.emacs.d/themes")
+  (load-theme 'monokai t)
+#+END_SRC
+
+** Font
+
+#+BEGIN_SRC emacs-lisp
+  ;; increase font size for better readability
+  (set-face-attribute 'default nil :height 120)
+
+  ;; Uncomment the lines below by removing semicolons and play with the
+  ;; values in order to set the width (in characters wide) and height
+  ;; (in lines high) Emacs will have whenever you start it
+  ;; (setq initial-frame-alist '((top . 0) (left . 0) (width . 177) (height . 53)))
+#+END_SRC
+
+** OS interactions
+
+#+BEGIN_SRC emacs-lisp
+  ;; Full path in title bar
+  (setq-default frame-title-format "%b - %f")
+
+  ;; Don't pop up font menu
+  (global-set-key (kbd "s-t") '(lambda () (interactive)))
+
+  ;; No bell
+  (setq ring-bell-function 'ignore)
+
+  ;; These settings relate to how emacs interacts with your operating system
+  (setq ;; makes killing/yanking interact with the clipboard
+    x-select-enable-clipboard t
+
+    ;; I'm actually not sure what this does but it's recommended?
+    x-select-enable-primary t
+
+    ;; Save clipboard strings into kill ring before replacing them.
+    ;; When one selects something in another program to paste it into Emacs,
+    ;; but kills something in Emacs before actually pasting it,
+    ;; this selection is gone unless this variable is non-nil
+    save-interprogram-paste-before-kill t
+
+    ;; Shows all options when running apropos. For more info,
+    ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Apropos.html
+    apropos-do-all t
+
+    ;; Mouse yank commands yank at point instead of at click.
+    mouse-yank-at-point t)
+#+END_SRC
+
+** Cursor and selection
+
+#+BEGIN_SRC emacs-lisp
+  ;; No cursor blinking, it's distracting
+  (blink-cursor-mode 0)
+
+  ;; Highlights matching parenthesis
+  (show-paren-mode 1)
+
+  ;; Highlight current line
+  (global-hl-line-mode 1)
+#+END_SRC
+
+** Editing behavior
+
+*** UTF 8 by default
+#+BEGIN_SRC emacs-lisp
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+END_SRC
+
+* Misc
+#+BEGIN_SRC emacs-lisp
+  ;; Changes all yes/no questions to y/n type
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  ;; shell scripts
+  (setq-default sh-basic-offset 2)
+  (setq-default sh-indentation 2)
+
+  ;; No need for ~ files when editing
+  (setq create-lockfiles nil)
+  ;; Save ~ files in central directory
+  (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
+  ;; Save numbered ~ files
+  (setq delete-old-versions t
+    kept-new-versions 6
+    kept-old-versions 2
+    version-control t)
+#+END_SRC
+
+* Language support
+
+** Org-mode
+#+BEGIN_SRC emacs-lisp
+  ;; Enable syntax highlighting in source blocks
+  (setq org-src-fontify-natively t)
+
+  (defun org-insert-src-block (src-code-type)
+    "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
+    (interactive
+      (let ((src-code-types
+        '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
+          "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+          "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
+          "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
+          "scheme" "sqlite")))
+       (list (ido-completing-read "Source code type: " src-code-types))))
+    (progn
+      (newline-and-indent)
+      (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+      (newline-and-indent)
+      (insert "#+END_SRC\n")
+      (previous-line 2)
+      (org-edit-src-code)))
+
+  (require 'ox-publish)
+  (setq org-publish-project-alist
+     '(
+       ("org-notes"
+        :base-directory "~/backup/notes"
+        :base-extension "org"
+        :publishing-directory "~/public_html/"
+        :recursive t
+        :publishing-function org-html-publish-to-html
+        :headline-levels 1   ; Just the default for this project.
+        :auto-preamble t
+        )
+
+       ("org-static"
+        :base-directory "~/org/"
+        :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
+        :publishing-directory "~/public_html/"
+        :recursive t
+        :publishing-function org-publish-attachment
+        )
+
+       ("org" :components ("org-notes" "org-static"))
+       ))
+#+END_SRC
+
+** nXML
+#+BEGIN_SRC emacs-lisp
+  (defun nxml-custom-keybindings ()
+    "Define nxml keybindings."
+    (define-key nxml-mode-map "\C-c\C-c" 'nxml-complete))
+  (add-hook 'nxml-mode-hook 'nxml-custom-keybindings)
+#+END_SRC
+
+* Key bindings
+
+** Map key to re-load emacs initialization file
+#+BEGIN_SRC emacs-lisp
+  ;; reload this file
+  (global-set-key (kbd "C-c i")
+    (lambda() (interactive)
+      (org-babel-load-file "~/.emacs.d/emacs.org")))
+  ;; edit this file
+  (global-set-key (kbd "<C-f1>")
+    (lambda() (interactive)
+      (find-file "~/org/index.org")))
+#+END_SRC
+
+** File navigation
+#+BEGIN_SRC emacs-lisp
+  ;; find-file-at-point
+  ;;(ffap-bindings)
+  (global-set-key (kbd "C-c C-o") 'ffap)
+#+END_SRC
+
+** Reload buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f5>")
+    '(lambda () "Revert the current buffer!" (interactive) (revert-buffer nil t nil)))
+#+END_SRC
+
+** Text size
+#+BEGIN_SRC emacs-lisp
+  ;; Increase/decrease text size in emacs
+  (global-set-key (kbd "C-+") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+  ;; C-x C-0 restores the default font size
+#+END_SRC
+
+** Fullscreen
+
+#+BEGIN_SRC emacs-lisp
+  ;; F11 = Full Screen
+  (defun toggle-fullscreen (&optional f)
+    "Toggle the fullscreen mode by hiding window frames etc."
+    (interactive)
+    (let ((current-value (frame-parameter nil 'fullscreen)))
+      (set-frame-parameter nil 'fullscreen
+        (if (equal 'fullboth current-value)
+          (if (boundp 'old-fullscreen) old-fullscreen nil)
+          (progn (setq old-fullscreen current-value)
+            'fullboth)))))
+  (global-set-key (kbd "<f11>") 'toggle-fullscreen)
+#+END_SRC
+
+** Org-mode keys
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook '(lambda ()
+    ;; turn on flyspell-mode by default
+    ;(flyspell-mode 1)
+    ;; C-TAB for expanding
+    ;(local-set-key (kbd "C-<tab>") 'yas/expand-from-trigger-key)
+    ;; keybinding for editing source code blocks
+    (local-set-key (kbd "C-c s e") 'org-edit-src-code)
+    ;; keybinding for inserting code blocks
+    (local-set-key (kbd "C-c s i") 'org-insert-src-block)
+  ))
+#+END_SRC
+
+** Magit keys
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x g") 'magit-status)
+#+END_SRC
+
