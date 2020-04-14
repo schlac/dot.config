@@ -41,7 +41,7 @@ set smarttab        " Enable smart-tab
 set softtabstop=4   " Number of spaces per Tab
 
 set wildmenu        " Use command line menu
-"set spell           " Enable spell-checking
+set spell           " Enable spell-checking
 
 set autoread        " Reload contens automatically from disk
 set backspace=indent,eol,start  " Backspace behaviour
