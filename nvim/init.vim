@@ -59,5 +59,5 @@ catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
 " Key Bindings
-nnoremap <Space>s/ :FlyGrep<cr>
+nnoremap <leader>g :FlyGrep<cr>
 
