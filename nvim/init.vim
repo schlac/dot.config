@@ -14,6 +14,7 @@ Plug 'ctrlpvim/ctrlp.vim'   " fuzzy file finder
 Plug 'wsdjeg/FlyGrep.vim'   " nicer global grep
 Plug 'bling/vim-airline'    " nicer status line
 Plug 'sjl/badwolf'          " color sheme
+Plug 'airblade/vim-gitgutter'  " show changed lines
 call plug#end()
 
 set number          " Show line numbers
