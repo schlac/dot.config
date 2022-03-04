@@ -15,6 +15,8 @@ Plug 'wsdjeg/FlyGrep.vim'   " nicer global grep
 Plug 'bling/vim-airline'    " nicer status line
 Plug 'sjl/badwolf'          " color sheme
 Plug 'airblade/vim-gitgutter'  " show changed lines
+Plug 'tpope/vim-fugitive'   " git integration
+Plug 'tpope/vim-unimpaired' " handy [ mappings
 call plug#end()
 
 set number          " Show line numbers
