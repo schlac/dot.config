@@ -55,11 +55,11 @@ filetype plugin on  " Enable visual filetry
 " create persistent file backups
 " see 'set backupdir?' for location
 silent execute '!mkdir -p ~/.backup/'
-set backupdir=.backup/,~/.backup/,/tmp//
+set backupdir=~/.backup/,/tmp//
 silent execute '!mkdir -p ~/.swp/'
-set directory=.swp/,~/.swp/,/tmp//
+set directory=~/.swp/,/tmp//
 silent execute '!mkdir -p ~/.undo/'
-set undodir=.undo/,~/.undo/,/tmp//
+set undodir=~/.undo/,/tmp//
 set backup
 "undo file
 if has('persistent_undo')      "check if your vim version supports it
