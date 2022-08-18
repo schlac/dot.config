@@ -1,9 +1,9 @@
 # .config usage
 
-Clone this to `~/.config`.
+Clone this to a location of you choosing and run the `./setup.sh` script to
+create symlinks into `XDG_CONFIG_HOME` (default=`$HOME\.config`).
 
-Set `XDG_CONFIG_HOME="$HOME\.config"`.
-More info at
+More info about XDG can be found at
 https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 .
 
@@ -19,7 +19,7 @@ Has to be linked to be found by emacs.
 
 ## Neovim (nvim)
 
-Has to be set to be used by vim as well.
+If intended has to be set to be used by vim as well.
 
 `MYVIMRC=~/.config/nvim/init.vim`
 
