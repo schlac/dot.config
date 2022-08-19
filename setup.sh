@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-set -ex
+set -e
 
 create_symlinks() {
 target_dir="$1"
