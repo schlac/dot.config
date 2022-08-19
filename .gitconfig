@@ -1,0 +1,90 @@
+[include]
+    path = .gitconfig-schlameuss
+[includeIf "gitdir:~/src/schlac/"]
+    path = .gitconfig-schlac
+[color]
+    ui = always
+[push]
+    default = simple
+[credential]
+    helper = cache --timeout=7200
+[status]
+    submoduleSummary = true
+[core]
+    ignorecase = false
+    autocrlf = input
+    excludesfile = ~/.gitignore
+[remote "origin"]
+    fetch = +refs/notes/*:refs/notes/*
+    fetch = +refs/changes/*:refs/changes/*
+[fetch]
+    recurseSubmodules = true
+[lfs]
+    LocalMediaDir = ~/.git-lfs-objects
+    locksverify = false
+[filter "lfs"]
+    smudge = git-lfs smudge -- %f
+    required = true
+    clean = git-lfs clean -- %f
+    process = git-lfs filter-process
+[alias]
+    #all = "!this() { git $*; }; all() { this && git submodule foreach --recursive "this"; }; all"
+    all = "!all() { git $* && git submodule foreach --recursive \"git $*\"; }; all"
+    alli = "!ali() { git $* ;  git submodule foreach --recursive \"git $* || true\"; }; ali"
+    amend = commit --amend
+    amenda = commit --amend -a
+    b = branch
+    blame-stat = "!bb() { git ls-tree -r -z --name-only HEAD -- $* | xargs -0 -n1 git blame --line-porcelain HEAD | grep \"^author \"| sort | uniq -c | sort -nr; }; bb"
+    co = checkout
+    cr = "!git checkout -b review-$(date +'%m%d')"
+    difflog = "!s() { echo 'local:'; git l @{u}...HEAD; echo; echo 'upstream:'; git l HEAD...@{u}; }; s"
+    ec = config --global -e
+    ecl = config --local -e
+    f = fetch --tags
+    fp = fetch --tags --prune
+    first = rev-list --max-parents=0 HEAD
+    rh = reset --hard
+    ria = !git rebase -i "$(git merge-base HEAD @{u})"
+    main = "!git remote show origin | grep 'HEAD branch' | cut -d ':' -f 2 | xargs"
+    #su = !git branch --set-upstream-to="$@"
+    su = "!s() { git branch --set-upstream-to=$*; }; s"
+    suu = !git su "origin/$(git rev-parse --abbrev-ref HEAD)"
+    sumo = !git su "origin/$(git remote show origin | grep 'HEAD branch' | cut -d ':' -f 2 | xargs)"
+    ss = show --stat
+    s1 = status -sbu
+    s = !git all status -sbu --show-stash
+    #sl = "!join -1 2 -2 1 -a 2 -a 1 <(git s) <(git diff --stat)"
+    s1 = !git all status -sbu --porcelain=v1
+    s2 = !git all status -sbu --porcelain=v2
+    ts = s
+    l = log --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
+    l1 = l -1
+    la = l --graph --all -20
+    ls = l --stat @{u}...
+    lsd = l --stat origin/dev..
+    lsu = l --stat @{u}..
+    lsm = !git l --stat $(git main)..
+    lr = l --show-notes=review -6
+    lg = l --graph -12
+    p = !git pull --rebase --prune && git submodule update --recursive --init --rebase --remote
+    pp = !git pull --rebase --autostash && git submodule foreach --recursive 'git pull --rebase --autostash'
+    ppp = !git pull --rebase --autostash --prune && git submodule foreach --recursive 'git pull --rebase --autostash --prune'
+    prune-all = !git remote | xargs -t -n 1 git remote prune
+    pickaxe = log -S
+    panic = "!panic() { ptext=$1; pname=\"../git-$(basename $(pwd))-$(date \"+%Y-%m-%dT%H%M%S\")-${ptext:=panic}.tar\"; echo \"Creating backup ($pname)...\"; tar cf \"$pname\" .; ls -l \"$pname\"; }; panic"
+[diff]
+    tool = code
+    indentHeuristic = true
+[difftool "code"]
+    cmd = /usr/bin/code --wait --diff "$LOCAL" "$REMOTE"
+[difftool "pycharm"]
+    cmd = /usr/local/bin/charm diff "$LOCAL" "$REMOTE" && echo "Press enter to continue..." && read
+[merge]
+    tool = code
+    keepBackup = false
+[mergetool]
+    keepBackup = false
+[mergetool "code"]
+    cmd = code --wait "$MERGED"
+[mergetool "pycharm"]
+    cmd = /usr/local/bin/charm merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
