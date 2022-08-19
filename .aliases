@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Editing
+alias e="$EDITOR"
+alias vi="$EDITOR"
+
+# System Utilities
+alias dnf="sudo dnf"
+alias yum="sudo dnf"
+
+# File Handling
+alias l='ls --color=auto'
+alias ll='l -l'
+alias la='ll -a'
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Fat-Finger-Helpers
+alias gi='git'
+alias gits='git s'
+
+# Config Management
+function setup_config() {
+    local command_alias="${1:-c}"
+    local git_dir="${2:-$HOME/.cfg}"
+    local git_command="git --git-dir=$git_dir --work-tree=$HOME"
+    alias $command_alias="$git_command"
+    if [ ! -d $git_dir ]; then
+        mkdir $git_dir
+        $git_command init
+        $git_command config --local status.showUntrackedFiles no
+    fi
+}
+setup_config
+
+## cloud
+alias ic=ibmcloud
