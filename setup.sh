@@ -1,11 +1,16 @@
 #!/usr/bin/bash
 set -e
 
+cat <<- EOF
+dot.config setup.sh [--force|-f]
+EOF
+
 RC=0
 FORCE=
 case "$1" in
     --force|-f)
         FORCE=1
+        shift
         ;;
 esac
 
@@ -31,8 +36,7 @@ for config in "$@"; do
     fi
     if [[ -e "$target_conf" ]]; then
         echo "WARN '$target_conf' already exists"
-        RC=3
-        continue
+        [[ ! $FORCE ]] && RC=3 && continue
     fi
 
     if [[ ( $FORCE ) ]]; then
@@ -49,7 +53,15 @@ done
 
 # ---
 
-create_symlinks "${HOME}" .aliases .bashrc .bash_profile .profile .gitconfig
-create_symlinks "${XDG_CONFIG_HOME:-${HOME}/.config}" nvim emacs
+create_symlinks "${HOME}" \
+    .aliases \
+    .bash_profile \
+    .bashrc \
+    .gitconfig \
+    .profile
+create_symlinks "${XDG_CONFIG_HOME:-${HOME}/.config}" \
+    emacs \
+    nvim \
+    starship.toml
 
 exit $RC
