@@ -9,7 +9,6 @@ endif
 call plug#begin(s:vimdir . '/plugged')
 Plug 'airblade/vim-gitgutter'   " show git change indicators
 Plug 'ap/vim-css-color'         " show #1d829e in color
-Plug 'bling/vim-airline'        " nicer status line
 Plug 'chrisbra/unicode.vim'     " unicode completion
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'godlygeek/tabular'        " table formating
@@ -22,6 +21,8 @@ Plug 'nvim-lua/completion-nvim'
 "Plug 'plasticboy/vim-markdown'  " markdown folding
 Plug 'preservim/nerdtree'       " file tree
 Plug 'sjl/badwolf'              " color scheme
+Plug 'neovim/nvim-lspconfig'    " language server configurations
+Plug 'nvim-lua/completion-nvim'
 "Plug 'tpope/vim-characterize'   " character details ga
 Plug 'tpope/vim-fugitive'       " git integration
 Plug 'tpope/vim-unimpaired'     " handy [ mappings

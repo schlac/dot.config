@@ -16,6 +16,14 @@ shopt -s histappend
 # no need to type cd
 shopt -s autocd
 
+# adjust path
+GOBIN="$(command -v go)" && export PATH="$(go env GOPATH)/bin:$PATH"
+[ -d ~/.cargo/bin ] && export PATH="~/.cargo/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # Load aliases
 alias_path="$HOME/.aliases"
 [[ -e "$alias_path" ]] && . "$alias_path"
@@ -66,17 +74,6 @@ mac_specific() {
     fi
 }
 
-# do platform dependent setup
-if [[ "$(uname)" == 'Darwin' ]]; then
-    # do something under Mac OS X platform
-    mac_specific
-#elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    # do something under GNU/Linux platform
-#elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-    # do something under Windows NT platform
-fi
-
-
 # record all terminal display
 #record_typescript(){
 #    local typescript_file="${HOME}/typescript/typescript-$(date -u "+%Y-%m-%d")-${HOSTNAME:-$(hostname)}-$(basename $(tty))-$$.log"
@@ -96,9 +93,14 @@ fi
 #mkdir -p ~/.logs
 #export PROMPT_COMMAND='[ "$(id -u)" -ne 0 ] && echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >> ~/.logs/bash-history-$(date "+%Y-%m-%d")-$(basename $(tty)).log'
 
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export PATH="$(go env GOPATH)/bin:$PATH"
+# do platform dependent setup
+if [[ "$(uname)" == 'Darwin' ]]; then
+    # do something under Mac OS X platform
+    mac_specific
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    # do something under GNU/Linux platform
+    true
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+    # do something under Windows NT platform
+    true
+fi

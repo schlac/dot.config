@@ -14,6 +14,7 @@ export ARCHFLAGS="-arch x86_64"
 # Set editor
 EDITOR="$(command -v nvim.appimage)" ||
     EDITOR="$(command -v nvim)" ||
+    EDITOR="$(command -v vim)" ||
     EDITOR="$(command -v vi)"
 export EDITOR
 export VISUAL="$EDITOR"
