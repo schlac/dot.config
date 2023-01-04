@@ -1,7 +1,3 @@
-let g:airline_powerline_fonts = 1
-
-set completefunc=emoji#complete " <C-k><C-u>
-
 set number          " Show line numbers
 set cursorcolumn    " Show vline on cursor
 set cursorline      " Show hline on cursor

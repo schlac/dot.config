@@ -26,9 +26,13 @@ nnoremap <leader>gg :Rg<cr>
 command! -bang -nargs=* Rgw call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 nnoremap <leader>g :Rgw <c-r><c-w><cr>
 nnoremap <leader>f :call fzf#vim#tags(expand('<cword>'))<cr>
+
 " toggle file tree
 nnoremap <C-n> :NERDTreeToggle<cr>
 nnoremap <C-m> :NERDTreeFind<cr>
 
 " toggle wrap
 nnoremap <leader>w :set wrap!<cr>
+
+" toggle paste
+nnoremap <leader>r :set paste!<cr>
