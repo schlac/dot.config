@@ -2,6 +2,8 @@
 
 [status]
 disabled = false
+pipestatus = true
+symbol = ''
 
 [git_commit]
 commit_hash_length = 8
