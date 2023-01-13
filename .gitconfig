@@ -10,6 +10,8 @@
     helper = cache --timeout=7200
 [status]
     submoduleSummary = true
+[init]
+    defaultBranch = main
 [core]
     ignorecase = false
     autocrlf = input
@@ -35,6 +37,7 @@
     amenda = commit --amend -a
     b = branch
     blame-stat = "!bb() { git ls-tree -r -z --name-only HEAD -- $* | xargs -0 -n1 git blame --line-porcelain HEAD | grep \"^author \"| sort | uniq -c | sort -nr; }; bb"
+    cc = "!c() { git commit -am \"Quick commit $(whoami)@$(hostname) $(date --iso) $*\"; }; c"
     co = checkout
     cr = "!git checkout -b review-$(date +'%m%d')"
     difflog = "!s() { echo 'local:'; git l @{u}...HEAD; echo; echo 'upstream:'; git l HEAD...@{u}; }; s"
