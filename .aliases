@@ -21,6 +21,8 @@ alias ....='cd ../../..'
 alias gi='git'
 alias gits='git s'
 
+alias rgf='rg --files | rg'
+
 # Config Management
 function setup_config() {
     local command_alias="${1:-c}"
@@ -37,3 +39,9 @@ setup_config
 
 ## cloud
 alias ic=ibmcloud
+
+## restic
+alias restic-local="restic --repo ~/restic --password-file ~/.config/restic/.restic-local"
+complete -o default -F __start_restic restic-local
+alias restic-box="restic --repo rclone:box:restic --password-file ~/.config/restic/.restic-box"
+complete -o default -F __start_restic restic-box
