@@ -17,16 +17,21 @@ shopt -s histappend
 shopt -s autocd
 
 # adjust path
-GOBIN="$(command -v go)" && export PATH="$(go env GOPATH)/bin:$PATH"
-[ -d ~/.cargo/bin ] && export PATH="~/.cargo/bin:$PATH"
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        export PATH="$1${PATH:+":$PATH"}"
+    fi
+}
+# add podman desktop compose
+#pathadd "$HOME/.local/share/containers/podman-desktop/extensions-storage/podman-desktop.compose/bin"
+# add go/bin
+GOBIN="$(command -v go)" && pathadd "$(go env GOPATH)/bin"
+# add cargo/bin
+[ -d $HOME/.cargo/bin ] && pathadd "$HOME/.cargo/bin"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Load aliases
-alias_path="$HOME/.aliases"
-[[ -e "$alias_path" ]] && . "$alias_path"
 
 init_starship() {
     # enable starship prompt
@@ -49,9 +54,6 @@ _fzf_setup_completion path code git
 
 mac_specific() {
     # do something under Mac OS X platform
-    # set locales
-    export LC_CTYPE=en_US.UTF-8
-    export LC_ALL=en_US.UTF-8
     # use colors
     export CLICOLOR=1
     # configure bsd/osx colors
@@ -104,3 +106,8 @@ elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
     # do something under Windows NT platform
     true
 fi
+
+# Load aliases
+alias_path="$HOME/.aliases"
+[[ -e "$alias_path" ]] && . "$alias_path"
+
