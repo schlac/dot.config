@@ -3,3 +3,8 @@ nvim/autoload/plug.vim
 nvim/autoload/plug.vim.old
 nvim/plugged
 nvim/spell/*.spl
+vim/.netrwhist
+vim/autoload/plug.vim
+vim/autoload/plug.vim.old
+vim/plugged
+vim/spell/*.spl

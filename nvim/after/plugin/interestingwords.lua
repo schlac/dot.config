@@ -1,0 +1,2 @@
+require("interestingwords").setup {
+}
