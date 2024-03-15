@@ -3,6 +3,9 @@
 -- Easy exit terminal
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
 
+-- Easy quickfix window close
+vim.keymap.set({"n", "v"}, "<leader><Esc>", ":cclose<cr>")
+
 -- Explore
 vim.keymap.set("n", "<leader>e", vim.cmd.Explore)
 
@@ -34,4 +37,10 @@ vim.cmd [[
 ]]
 vim.keymap.set("n", "<leader>g", ":Rgw <c-r><c-w><cr>")
 vim.keymap.set("n", "<leader>f", [[:call fzf#vim#tags(expand('<cword>'))<cr>]])
+
+-- configure treesitter folding in local buffer
+vim.keymap.set("n", "<leader>F", function()
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+end)
 

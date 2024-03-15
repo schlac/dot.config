@@ -1,3 +1,13 @@
+-- only continue if notes dirs exist
+if vim.fn.isdirectory("/home/chrschla/src/schlameuss/notes/") == 0 then
+    print("no notes dir 1")
+    return
+end
+if vim.fn.isdirectory("/home/chrschla/src/schlac/zettel/") == 0 then
+    print("no notes dir 2")
+    return
+end
+
 require'obsidian'.setup {
     workspaces = {
         { name = "work", path = "~/src/schlameuss/notes", },
@@ -7,9 +17,10 @@ require'obsidian'.setup {
         date_format = "%Y/%Y-%m",
         alias_format = "%Y-%m-%d",
     },
-    completion = {
-        use_path_only = true,
-    },
+    wiki_link_func = function(opts)
+        -- behave like use_path_only = true
+        return string.format("[[%s]]", opts.path)
+    end,
     disable_frontmatter = true,
     ui = {
         -- Define how various check-boxes are displayed
@@ -19,6 +30,8 @@ require'obsidian'.setup {
             [">"] = { char = "⭢", hl_group = "ObsidianRightArrow" },
             ["~"] = { char = "~", hl_group = "ObsidianTilde" },
         },
+        bullets = { char = "■", hl_group = "ObsidianBullet" },
+        external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
     },
 }
 

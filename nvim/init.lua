@@ -1,4 +1,4 @@
 require("basic")
-require("colors")
 require("lazy-setup")
+require("colors")
 require("keys")

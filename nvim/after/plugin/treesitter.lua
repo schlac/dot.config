@@ -8,8 +8,8 @@ require'nvim-treesitter.configs'.setup {
       "lua",
       "make",
       "markdown",
+      "markdown_inline",
       "python",
-      "query",
       "rust",
       "vim",
       "vimdoc",
@@ -19,6 +19,8 @@ require'nvim-treesitter.configs'.setup {
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = true,
+
+  indent = { enable = true },
 
   highlight = {
     enable = true,

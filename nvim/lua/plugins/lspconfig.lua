@@ -10,5 +10,6 @@ return {
             "hrsh7th/cmp-buffer",
         },
     },
-    {"neovim/nvim-lspconfig", enabled = false},
+    {"neovim/nvim-lspconfig",},
+    {"lspcontainers/lspcontainers.nvim",},
 }
