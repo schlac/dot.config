@@ -37,6 +37,8 @@ function setup_config() {
 }
 setup_config
 
+alias tags='ctags -R --exclude=".git" --exclude="build" --exclude=".venv" .'
+
 ## cloud
 alias ic=ibmcloud
 
