@@ -2,20 +2,22 @@
 	path = ~/.gitconfig-schlameuss
 [includeIf "gitdir:~/src/linux/"]
 	path = ~/.gitconfig-schlameuss-linux
-[includeIf "gitdir:~/src/ltc/linux/"]
+[includeIf "gitdir:~/src/ltc/"]
 	path = ~/.gitconfig-schlameuss-linux
-[includeIf "gitdir:~/src/oss/"]
+[includeIf "gitdir:~/src/ltc/linux/"]
 	path = ~/.gitconfig-schlameuss-linux
 [includeIf "gitdir:~/src/schlac/"]
 	path = ~/.gitconfig-schlac
-[color]
-	ui = always
+[includeIf "gitdir:~/.cfg"]
+	path = ~/.gitconfig-schlac
 [push]
 	default = simple
 [credential]
 	helper = cache --timeout=7200
 [status]
 	submoduleSummary = true
+[commit]
+	verbose = true
 [init]
 	defaultBranch = main
 [core]
@@ -39,17 +41,19 @@
 	#all = "!this() { git $*; }; all() { this && git submodule foreach --recursive "this"; }; all"
 	all = "!all() { git $* && git submodule foreach --recursive \"git $*\"; }; all"
 	alli = "!ali() { git $* ;  git submodule foreach --recursive \"git $* || true\"; }; ali"
-	amend = commit --amend
-	amenda = commit --amend -a
+	amend = commit --amend --allow-empty
+	amenda = commit --amend -a --reuse-message=HEAD
 	b = branch
 	blame-stat = "!bb() { git ls-tree -r -z --name-only HEAD -- $* | xargs -0 -n1 git blame --line-porcelain HEAD | grep \"^author \"| sort | uniq -c | sort -nr; }; bb"
 	cc = "!c() { git commit -am \"Quick commit $(whoami)@$(hostname) $(date --iso) $*\"; }; c"
 	co = checkout
 	cr = "!git checkout -b review-$(date +'%m%d')"
+	desc = log -1 --grep=branch.description --format=format:'%b'
 	difflog = "!s() { echo 'local:'; git l @{u}...HEAD; echo; echo 'upstream:'; git l HEAD...@{u}; }; s"
 	ec = config --global -e
 	ecl = config --local -e
 	f = fetch --tags
+	ff = fetch --tags --all
 	fp = fetch --tags --prune
 	first = rev-list --max-parents=0 HEAD
 	rh = reset --hard
@@ -67,7 +71,8 @@
 	s1 = !git all status -sbu --porcelain=v1
 	s2 = !git all status -sbu --porcelain=v2
 	ts = s
-	l = log --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
+	l = log --abbrev-commit --decorate --format='%C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
+	ld = log --decorate --format='%C(bold blue)%(describe)%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
 	l1 = l -1
 	la = l --graph --all -20
 	ls = l --stat @{u}...
@@ -99,5 +104,4 @@
 [mergetool "pycharm"]
 	cmd = /usr/local/bin/charm merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
 [pretty]
-	fixes = Fixes: %h (\"%s\")
-
+	fixes = Fixes: %h (\\\"%s\\\")
