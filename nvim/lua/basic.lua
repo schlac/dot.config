@@ -12,11 +12,11 @@ vim.opt.listchars = { tab = ":▸:", trail = "▒" } -- Set chars for whitespace
 vim.opt.linebreak = true      -- Break lines at word (requires Wrap lines)
 vim.opt.textwidth = 80        -- Line wrap (number of cols)
 vim.opt.showbreak = "+++"     -- Wrap-broken line prefix
-vim.opt.colorcolumn = "+1"    -- Show vertical ruler at textwidth
+vim.opt.colorcolumn = "+1,+41"-- Show vertical ruler at textwidth
 
 vim.opt.termguicolors = true  -- true color
 vim.opt.visualbell = true     -- Use visual bell (no beeping)
-vim.opt.conceallevel = 1      -- Allow cosmetic text replacement
+vim.opt.conceallevel = 0      -- Don't allow cosmetic text replacement
 
 vim.opt.ruler = true          -- Show row and column ruler information
 vim.opt.showcmd = true        -- Show current command

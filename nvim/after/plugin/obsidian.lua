@@ -23,6 +23,7 @@ require'obsidian'.setup {
     end,
     disable_frontmatter = true,
     ui = {
+        enable = false,
         -- Define how various check-boxes are displayed
         checkboxes = {
             [" "] = { char = "☐", hl_group = "ObsidianTodo" },

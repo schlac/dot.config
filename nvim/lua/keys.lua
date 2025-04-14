@@ -35,7 +35,7 @@ vim.keymap.set("n", "<leader>gg", ":Rg<cr>", {desc = "grep in files"})
 vim.cmd [[
     command! -bang -nargs=* Rgw call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 ]]
-vim.keymap.set("n", "<leader>g", ":Rgw <c-r><c-w><cr>")
+vim.keymap.set("n", "<leader>g", ":Rg <c-r><c-w><cr>")
 vim.keymap.set("n", "<leader>f", [[:call fzf#vim#tags(expand('<cword>'))<cr>]])
 
 -- configure treesitter folding in local buffer

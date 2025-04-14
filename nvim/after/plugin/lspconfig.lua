@@ -1,5 +1,6 @@
 ---- Setup language servers
 local lspconfig = require('lspconfig')
+local caps = require('cmp_nvim_lsp').default_capabilities
 
 lspconfig.luau_lsp.setup {
   on_init = function(client)
@@ -33,7 +34,29 @@ lspconfig.luau_lsp.setup {
   end
 }
 
--- lspconfig.pyright.setup {}
+lspconfig.pyright.setup {
+  before_init = function(params)
+    params.processId = vim.NIL
+  end,
+  cmd = require'lspcontainers'.command('pyright', {
+    container_runtime = "podman",
+  }),
+  root_dir = require'lspconfig/util'.root_pattern(".git", vim.fn.getcwd()),
+  settings = {
+    analysis = {
+      autoSearchPaths = true,
+      diagnosticMode = "openFilesOnly",
+      useLibraryCodeForTypes = true
+    }
+  }
+}
+
+lspconfig.clangd.setup{}
+-- lspconfig.clangd.setup {
+--   cmd = require'lspcontainers'.command('clangd', {
+--     container_runtime = "podman",
+--   }),
+-- }
 
 -- lspconfig.tsserver.setup {}
 
@@ -51,19 +74,24 @@ lspconfig.luau_lsp.setup {
 lspconfig.rust_analyzer.setup{
   settings = {
     ['rust-analyzer'] = {
+      cmd = require'lspcontainers'.command(
+        'rust_analyzer', {
+          container_runtime = "podman",
+        }),
+      -- capabilities = caps,
       diagnostics = {
-        enable = false;
-      }
+        enable = true;
+      },
     }
   }
 }
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<space>E', vim.diagnostic.open_float)
+vim.keymap.set('n', '<space>q', vim.diagnostic.open_float)
+vim.keymap.set('n', '<space>Q', vim.diagnostic.setloclist)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer

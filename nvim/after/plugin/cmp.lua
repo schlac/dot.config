@@ -6,6 +6,10 @@ end
 
 local cmp = require('cmp')
 cmp.setup {
+  sources = {
+    { name = 'nvim_lsp', },
+  },
+
   mapping = {
 
     ['<C-Space>'] = cmp.mapping.confirm {

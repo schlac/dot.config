@@ -1,5 +1,5 @@
 return {
     -- manage plugin manager
-    {"folke/lazy.nvim",},
+    {"folke/lazy.nvim", version='*',},
 }
 
