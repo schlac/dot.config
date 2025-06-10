@@ -80,7 +80,7 @@
 	lsu = l --stat @{u}..
 	lsm = !git l --stat $(git main)..
 	lr = l --show-notes=review -6
-	lg = l --graph -12
+	lg = l --graph -20
 	p = !git pull --rebase --prune && git submodule update --recursive --init --rebase --remote
 	pp = !git pull --rebase --autostash && git submodule foreach --recursive 'git pull --rebase --autostash'
 	ppp = !git pull --rebase --autostash --prune && git submodule foreach --recursive 'git pull --rebase --autostash --prune'
@@ -95,7 +95,7 @@
 [difftool "pycharm"]
 	cmd = /usr/local/bin/charm diff "$LOCAL" "$REMOTE" && echo "Press enter to continue..." && read
 [merge]
-	tool = code
+	tool = nvimdiff
 	keepBackup = false
 [mergetool]
 	keepBackup = false
@@ -103,5 +103,9 @@
 	cmd = code --wait "$MERGED"
 [mergetool "pycharm"]
 	cmd = /usr/local/bin/charm merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
+[b4]
+	email-exclude = stable@vger.kernel.org
+	prep-perpatch-check-cmd = ./scripts/checkpatch.pl --terse --no-summary --mailback --strict --showfile
+	am-perpatch-check-cmd = ./scripts/checkpatch.pl -q --terse --no-summary --mailback --strict
 [pretty]
 	fixes = Fixes: %h (\\\"%s\\\")
