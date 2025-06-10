@@ -13,8 +13,10 @@ export HISTCONTROL=ignoreboth
 
 # merge history of all terminals
 shopt -s histappend
-# no need to type cd
-shopt -s autocd
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
 
 # adjust path
 pathadd() {
@@ -43,14 +45,18 @@ init_starship
 
 ## configure fzf fuzzy finder
 # use rg to find files
-#export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!{.git/*,node_modules}"'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!{.git/*,node_modules}"'
 
-#export FZF_COMPLETION_TRIGGER='*'
-# use CTRL-T, CTRL-R, ALT-C shortcuts
-source /usr/share/fzf/shell/key-bindings.bash
+# #export FZF_COMPLETION_TRIGGER='*'
+# # use CTRL-T, CTRL-R, ALT-C shortcuts
+# source /usr/share/fzf/shell/key-bindings.bash
+#
+# # complete paths for code
+# _fzf_setup_completion path code git
 
-# complete paths for code
-_fzf_setup_completion path code git
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
+
+[[ -x "$(command -v lab)" ]] && source <(lab completion)
 
 mac_specific() {
     # do something under Mac OS X platform
@@ -110,4 +116,3 @@ fi
 # Load aliases
 alias_path="$HOME/.aliases"
 [[ -e "$alias_path" ]] && . "$alias_path"
-
