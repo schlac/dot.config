@@ -10,8 +10,13 @@ end
 
 require'obsidian'.setup {
     workspaces = {
-        { name = "work", path = "~/src/schlameuss/notes", },
-        { name = "personal", path = "~/src/schlac/zettel", },
+        { name = "work", path = "~/src/schlameuss/notes/", },
+        {
+            name = "personal", path = "~/src/schlac/zettel/",
+            overrides = {
+                daily_notes = { date_format = "%Y-%m", },
+            },
+        },
     },
     daily_notes = {
         date_format = "%Y/%Y-%m",
@@ -21,6 +26,9 @@ require'obsidian'.setup {
         -- behave like use_path_only = true
         return string.format("[[%s]]", opts.path)
     end,
+    wiki_link_func = "use_alias_only",
+    preferred_link_style = "wiki", -- Either 'wiki' or 'markdown'
+
     disable_frontmatter = true,
     ui = {
         enable = false,
@@ -40,5 +48,6 @@ require'obsidian'.setup {
 vim.keymap.set("n", "~", function()
     require("obsidian")
     vim.cmd.ObsidianToday()
+    vim.cmd.cd('~/src/schlameuss/notes')
 end)
 
