@@ -46,6 +46,7 @@
 	b = branch
 	blame-stat = "!bb() { git ls-tree -r -z --name-only HEAD -- $* | xargs -0 -n1 git blame --line-porcelain HEAD | grep \"^author \"| sort | uniq -c | sort -nr; }; bb"
 	cc = "!c() { git commit -am \"Quick commit $(whoami)@$(hostname) $(date --iso) $*\"; }; c"
+	cite = show -s --pretty='format:%h (\"%s\")'
 	co = checkout
 	cr = "!git checkout -b review-$(date +'%m%d')"
 	desc = log -1 --grep=branch.description --format=format:'%b'
@@ -71,11 +72,13 @@
 	s1 = !git all status -sbu --porcelain=v1
 	s2 = !git all status -sbu --porcelain=v2
 	ts = s
-	l = log --abbrev-commit --decorate --format='%C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
+	l = log --decorate --format='%C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
 	ld = log --decorate --format='%C(bold blue)%(describe)%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)%d (%ar) %N'
 	l1 = l -1
 	la = l --graph --all -20
 	ls = l --stat @{u}...
+	llc = log --format='%C(bold blue)%H%C(reset) %C(white)%s%C(reset) %C(dim white)%ae%C(reset)%C(auto)'
+	ll = log --format='%C(bold blue)%H%C(reset)'
 	lsd = l --stat origin/dev..
 	lsu = l --stat @{u}..
 	lsm = !git l --stat $(git main)..
@@ -95,6 +98,7 @@
 [difftool "pycharm"]
 	cmd = /usr/local/bin/charm diff "$LOCAL" "$REMOTE" && echo "Press enter to continue..." && read
 [merge]
+	; tool = code
 	tool = nvimdiff
 	keepBackup = false
 [mergetool]
