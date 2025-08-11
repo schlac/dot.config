@@ -1,90 +1,122 @@
 ---- Setup language servers
-local lspconfig = require('lspconfig')
-local caps = require('cmp_nvim_lsp').default_capabilities
 
-lspconfig.luau_lsp.setup {
-  on_init = function(client)
-    local path = client.workspace_folders[1].name
-    if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
-      client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
-        Lua = {
-          runtime = {
-            -- Tell the language server which version of Lua you're using
-            -- (most likely LuaJIT in the case of Neovim)
-            version = 'LuaJIT'
-          },
-          -- Make the server aware of Neovim runtime files
-          workspace = {
-            checkThirdParty = false,
-            library = {
-              vim.env.VIMRUNTIME,
-              vim.fn.stdpath("data") .. "/lazy/",
-              -- "${3rd}/luv/library"
-              -- "${3rd}/busted/library",
-            }
-            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-            -- library = vim.api.nvim_get_runtime_file("", true)
-          }
-        }
-      })
-
-      client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-    end
-    return true
-  end
-}
-
-lspconfig.pyright.setup {
-  before_init = function(params)
-    params.processId = vim.NIL
-  end,
-  cmd = require'lspcontainers'.command('pyright', {
+vim.lsp.enable('lua_ls', {
+  cmd = require'lspcontainers'.command('lua_ls', {
     container_runtime = "podman",
-  }),
-  root_dir = require'lspconfig/util'.root_pattern(".git", vim.fn.getcwd()),
-  settings = {
-    analysis = {
-      autoSearchPaths = true,
-      diagnosticMode = "openFilesOnly",
-      useLibraryCodeForTypes = true
-    }
-  }
-}
 
-lspconfig.clangd.setup{}
--- lspconfig.clangd.setup {
+    on_init = function(client)
+      if client.workspace_folders then
+        local path = client.workspace_folders[1].name
+        if
+          path ~= vim.fn.stdpath('config')
+          and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+        then
+          return
+        end
+      end
+      client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most
+          -- likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+          -- Tell the language server how to find Lua modules same way as Neovim
+          -- (see `:h lua-module-load`)
+          path = {
+            'lua/?.lua',
+            'lua/?/init.lua',
+          },
+        },
+        -- Make the server aware of Neovim runtime files
+        workspace = {
+          checkThirdParty = false,
+          library = {
+            vim.env.VIMRUNTIME
+            -- Depending on the usage, you might want to add additional paths
+            -- here.
+            -- '${3rd}/luv/library'
+            -- '${3rd}/busted/library'
+          }
+          -- Or pull in all of 'runtimepath'.
+          -- NOTE: this is a lot slower and will cause issues when working on
+          -- your own configuration.
+          -- See https://github.com/neovim/nvim-lspconfig/issues/3189
+          -- library = {
+          --   vim.api.nvim_get_runtime_file('', true),
+          -- }
+        },
+      })
+    end,
+
+  }),
+})
+
+vim.lsp.config('pyrefly', {
+  cmd = { 'pyrefly', 'lsp' },
+  filetypes = { 'python' },
+  root_markers = {
+    'pyrefly.toml',
+    'pyproject.toml',
+    'setup.py',
+    'setup.cfg',
+    'requirements.txt',
+    'Pipfile',
+    '.git',
+  },
+  on_exit = function(code, _, _)
+    vim.notify('Closing Pyrefly LSP exited with code: ' .. code, vim.log.levels.INFO)
+  end,
+})
+vim.lsp.enable({'pyrefly'})
+
+-- vim.lsp.enable(pyright, {
+--   before_init = function(params)
+--     params.processId = vim.NIL
+--   end,
+--   cmd = require'lspcontainers'.command('pyright', {
+--     container_runtime = "podman",
+--   }),
+--   root_dir = require'lspconfig/util'.root_pattern(".git", vim.fn.getcwd()),
+--   settings = {
+--     analysis = {
+--       autoSearchPaths = true,
+--       diagnosticMode = "openFilesOnly",
+--       useLibraryCodeForTypes = true
+--     }
+--   }
+-- })
+
+-- vim.lsp.enable(tsserver, {}
+
+-- vim.lsp.enable(clangd, {
 --   cmd = require'lspcontainers'.command('clangd', {
 --     container_runtime = "podman",
 --   }),
--- }
+-- })
 
--- lspconfig.tsserver.setup {}
+local nproc = string.gsub(vim.fn.system('nproc'), "\n", "")
+vim.lsp.enable('clangd', {
+  cmd = {
+    "clangd",
+    "--header-insertion=never",
+    "-j", nproc,
+    "--background-index",
+  },
+  filetypes = {"c", "cpp", "objc", "objcpp"},
+})
 
--- local nproc = string.gsub(vim.fn.system('nproc'), "\n", "")
--- lspconfig.clangd.setup {
---   cmd = {
---     "clangd",
---     "--header-insertion=never",
---     "-j", nproc,
---     "--background-index",
---   },
---   filetypes = {"c", "cpp", "objc", "objcpp"},
--- }
-
-lspconfig.rust_analyzer.setup{
+vim.lsp.enable('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
       cmd = require'lspcontainers'.command(
         'rust_analyzer', {
           container_runtime = "podman",
         }),
-      -- capabilities = caps,
       diagnostics = {
         enable = true;
       },
     }
   }
-}
+})
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
