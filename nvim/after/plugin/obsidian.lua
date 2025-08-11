@@ -9,6 +9,7 @@ if vim.fn.isdirectory("/home/chrschla/src/schlac/zettel/") == 0 then
 end
 
 require'obsidian'.setup {
+    legacy_commands = false,
     workspaces = {
         { name = "work", path = "~/src/schlameuss/notes/", },
         {
@@ -31,23 +32,35 @@ require'obsidian'.setup {
 
     disable_frontmatter = true,
     ui = {
-        enable = false,
         -- Define how various check-boxes are displayed
-        checkboxes = {
-            [" "] = { char = "☐", hl_group = "ObsidianTodo" },
-            ["x"] = { char = "☑", hl_group = "ObsidianDone" },
-            [">"] = { char = "⭢", hl_group = "ObsidianRightArrow" },
-            ["~"] = { char = "~", hl_group = "ObsidianTilde" },
+        checkbox = {
+            order = { " ", "!", "x", },
+            [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
+            ["!"] = { char = "", hl_group = "ObsidianImportant" },
+            ["x"] = { char = "", hl_group = "ObsidianDone" },
         },
-        bullets = { char = "■", hl_group = "ObsidianBullet" },
-        external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+        bullets = { "■", hl_group = "ObsidianBullet" },
+        external_link_icon = { "" },
+        hl_groups = {
+            ObsidianTodo = { bold = true, fg = "#f78c6c" },
+            ObsidianDone = { bold = true, fg = "#09d00f" },
+            ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
+            ObsidianTilde = { bold = true, fg = "#ff5370" },
+            ObsidianImportant = { bold = true, fg = "#d73128" },
+            ObsidianBullet = { bold = true, fg = "#09d00f" },
+            ObsidianRefText = { underline = true, fg = "#07920a" },
+            ObsidianExtLinkIcon = { fg = "#07920a" },
+            ObsidianTag = { italic = true, fg = "#09d00f" },
+            ObsidianBlockID = { italic = true, fg = "#09d00f" },
+            ObsidianHighlightText = { bg = "#75662e" },
+        },
     },
 }
 
 -- jump to current month notes file
 vim.keymap.set("n", "~", function()
     require("obsidian")
-    vim.cmd.ObsidianToday()
+    vim.cmd.Obsidian('today')
     vim.cmd.cd('~/src/schlameuss/notes')
 end)
 
