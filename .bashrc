@@ -43,6 +43,9 @@ init_starship() {
 }
 init_starship
 
+[[ $(command -v vim) ]] && export EDITOR=vim
+[[ $(command -v nvim) ]] && export EDITOR=nvim
+
 ## configure fzf fuzzy finder
 # use rg to find files
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --glob "!{.git/*,node_modules}"'
