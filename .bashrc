@@ -26,6 +26,8 @@ pathadd() {
 }
 # add podman desktop compose
 #pathadd "$HOME/.local/share/containers/podman-desktop/extensions-storage/podman-desktop.compose/bin"
+pathadd "$HOME/bin"
+
 # add go/bin
 GOBIN="$(command -v go)" && pathadd "$(go env GOPATH)/bin"
 # add cargo/bin
