@@ -5,8 +5,10 @@ return {
         ft = "markdown",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "junegunn/fzf.vim",
+            -- "junegunn/fzf.vim",
+            "ibhagwan/fzf-lua",
             "hrsh7th/nvim-cmp",
         },
+        lazy = false,
     },
 }
