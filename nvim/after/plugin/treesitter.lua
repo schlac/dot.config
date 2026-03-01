@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed) see https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
   ensure_installed = {
       "bash",
