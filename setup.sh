@@ -62,7 +62,9 @@ create_symlinks "${HOME}" \
 create_symlinks "${XDG_CONFIG_HOME:-${HOME}/.config}" \
     alacritty \
     emacs \
+    kitty \
     nvim \
-    starship.toml
+    starship.toml \
+    waybar
 
 exit $RC
