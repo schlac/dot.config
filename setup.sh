@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 set -e
 
 cat <<- EOF
@@ -60,6 +60,7 @@ create_symlinks "${HOME}" \
     .gitconfig \
     .profile
 create_symlinks "${XDG_CONFIG_HOME:-${HOME}/.config}" \
+    alacritty \
     emacs \
     nvim \
     starship.toml

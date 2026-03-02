@@ -1,0 +1,22 @@
+[general]
+
+import = [
+  "monokai_charcoal_white.toml",
+]
+
+[window]
+decorations = "Full" # "None"
+decorations_theme_variant = "Dark" # "Light" "None"
+
+[font]
+normal = {
+  family = "monospace",
+  # family = "Source Code Pro Medium",
+}
+
+[keyboard]
+bindings = [
+  { key = "N", mods = "Control|Shift", action = "CreateNewWindow"}, # `Ctrl+D` to close
+  { key = "Return", mods = "Control|Shift", action = "SpawnNewInstance"}, # `Ctrl+D` to close
+]
+
