@@ -123,8 +123,6 @@ vim.lsp.enable('rust_analyzer', {
 vim.keymap.set('n', '<space>q', vim.diagnostic.open_float)
 vim.keymap.set('n', '<space>Q', vim.diagnostic.setloclist)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -149,8 +147,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end, opts)
         vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
         vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', '<space>f', function()
+        vim.keymap.set({ 'n', 'x', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set({ 'n', 'x', 'v' }, '<space>f', function()
             vim.lsp.buf.format { async = true }
         end, opts)
     end,
