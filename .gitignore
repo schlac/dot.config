@@ -1,3 +1,5 @@
+go/env
+lazygit/state.yml
 nvim/.netrwhist
 nvim/autoload/plug.vim
 nvim/autoload/plug.vim.old
@@ -8,4 +10,3 @@ vim/autoload/plug.vim
 vim/autoload/plug.vim.old
 vim/plugged
 vim/spell/*.spl
-go/env

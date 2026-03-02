@@ -1,0 +1,61 @@
+gui:
+  # nerdFontsVersion: 3
+  commitHashLength: 12
+  expandFocusedSidePanel: true
+  filterMode: fuzzy
+  shortTimeFormat: 15:04
+  showBranchCommitHash: true
+  skipRewordInEditorWarning: true
+  timeFormat: 2006-01-02
+  spinner:
+    rate: 80
+    frames:
+      - '▎ '
+      - '▍ '
+      - '▌ '
+      - '▋ '
+      - '▊ '
+      - '▉ '
+      - '█ '
+      - '█▎'
+      - '█▍'
+      - '█▌'
+      - '█▋'
+      - '█▊'
+      - '█▉'
+      - '██'
+      - '█▉'
+      - '█▊'
+      - '█▋'
+      - '█▌'
+      - '█▍'
+      - '█▎'
+      - '█ '
+      - '▉ '
+      - '▊ '
+      - '▋ '
+      - '▌ '
+      - '▍ '
+  statusPanelView: allBranchesLog
+git:
+  log:
+    order: "default"
+  # commit:
+  #   signOff: true
+  autoFetch: false
+  mainBranches: [master, main, devel]
+os:
+  editPreset: 'nvim'
+update:
+  method: never
+customCommands:
+  - key: 'D'
+    context: 'localBranches'
+    description: Edit the branch description
+    command: 'git branch --edit-description {{.SelectedLocalBranch.Name | quote}}'
+    output: terminal
+  - key: 'D'
+    context: 'commits'
+    description: Edit the branch description
+    command: 'git branch --edit-description {{.SelectedLocalBranch.Name | quote}}'
+    output: terminal

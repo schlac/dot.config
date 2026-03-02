@@ -63,6 +63,7 @@ create_symlinks "${XDG_CONFIG_HOME:-${HOME}/.config}" \
     alacritty \
     emacs \
     kitty \
+    lazygit \
     nvim \
     starship.toml \
     waybar
